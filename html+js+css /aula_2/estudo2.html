@@ -4,21 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista de Tarefas</title>
-  <link rel="stylesheet" href="estudo2.css">
+  <link rel="stylesheet" href="estudo2.css"> // link para arquivo CSS
 </head>
 <body>
-  <div class="container">
+  <div class="container"> // Chama a função container do CSS
     <h1>Lista de Tarefas</h1>
     <p>Adicione suas tarefas!</p>
-    <button onclick="adicionarTarefa()">Adicionar Tarefa</button>
+    <input type="text" id="inputTarefa" placeholder="Digite sua tarefa"> //input para digitar um texto, id para referenciar no JS e placeholder para mostrar um texto dentro do input
+    <button onclick="adicionarTarefa()">Adicionar Tarefa</button> // button cria um botão clicável, onclick chama a função adicionarTarefa do JS
     <p id="mensagem"></p>
+    <ul id = "Lista"></ul> // ul cria uma lista não ordenada, id para referenciar no JS
   </div>
-
-  <script>
-    function adicionarTarefa() {
-      let mensagem = "Tarefa adicionada com sucesso!";
-            document.getElementById("mensagem").textContent = mensagem;
-    }
-  </script>
+  <script src="estudo2.js"></script> // link para arquivo JS
 </body>
 </html>
