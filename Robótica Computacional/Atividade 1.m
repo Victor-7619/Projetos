@@ -13,10 +13,10 @@
  one = sym(1); zero = sym(0); % declaração de duas variáveis simbólicenseas (0 & 1)
  deg2rad_sym = @(d)sym(d) * sym(pi)/ sym(180); %usada para converter ângulos expressos em graus para radiano
 
- T = [ zero zero zero one;% condição de existência
-      one zero zero dx; % X1, Y1 , Z1 relacionadas ao X0 / Criação da matriz de translação 4x4
-      zero one zero dy;% X1, Y1 , Z1 relacionadas ao Y0
-      zero zero one dz];% X1, Y1 , Z1 relacionadas ao Z0
+ T = [ one zero zero dx;% condição de existência
+      zero one zero dy; % X1, Y1 , Z1 relacionadas ao X0 / Criação da matriz de translação 4x4
+      zero zero one dz;% X1, Y1 , Z1 relacionadas ao Y0
+      zero zero zero one];% X1, Y1 , Z1 relacionadas ao Z0
 
  Rx = [ one   zero     zero     zero; % Eixo X1,onde o X1 vai ser rotacionado e comparado com X0,Y0 & Z0
        zero  cos(th) -sin(th)  zero; % Eixo Y1,onde o X1 vai ser rotacionado e comparado com X0,Y0 & Z0
@@ -27,9 +27,9 @@
  Rz= [ cos(th) -sin(th) zero zero;  %Eixo X, onde o Z1 vai ser rotacionado e comparado X0,Y0 & Z0
        sin(th) cos(th) zero zero; %Eixo Y1,onde o Z1 vai ser rotacionado e comparado com X0,Y0 & Z0
        zero     zero     one  zero; %Eixo Z1,onde o Z1 vai ser rotacionado e comparado com X0,Y0 & Z0
-       zero     zero     one  zero]; % Linha para montar matriz generalizada
+       zero     zero     zero  one]; % Linha para montar matriz generalizada
 
- F0=sym(eye(4)); % criação de matriz identidade 4x4 e conversão para símbolos matemáticos
+ F0 = sym(eye(4)); % criação de matriz identidade 4x4 e conversão para símbolos matemáticos
 
   % --------- Cadeia de frames (100% simbólica) ---------
 
@@ -66,7 +66,7 @@
 
  Tr_6_7 = subs(T, [dx dy dz], [zero zero L7]); % o Tr_6_7 será igual a substituição de dx, dy e dz da matriz de transição por zero zero e l7, sem rotação
  TH_6_7 = Tr_6_7 * subs(Rz, th, th7); % TH_6_7 será igual a translação de 5 a 6 multiplicado pela substituição do th por th7 de rz
- F7 = F6 * Tr_6_7; % Frame 7 será o Frame 6 multiplicado pelo Tr_6_7
+ F7 = F6 * TH_6_7; % Frame 7 será o Frame 6 multiplicado pelo Tr_6_7
 
  Tr_7_8 = subs(T, [dx dy dz], [zero zero L7]); % o Tr_7_8 será igual a substituição de dx, dy e dz da matriz de transição por zero zero e l8, sem rotação
  F8 = F7 * Tr_7_8; % Frame 7 será o Frame 8 multiplicado pelo Tr_7_8
@@ -87,7 +87,6 @@
   % --------- Substituições -> vpa -> double ---------
  F0 = eye(4); % criação de matriz identidade 4x4 (ponto de origem frame 0)
  F1 = double(vpa(subs(F1, th1, t1s), 12)); % subs é executado primeiro, substituindo th1 por t1s. Depois vem o vpa que transforma o decimal do resultado de subs e o resume a 12 casas decimais e o double substitui todos os th1 por t1s na matriz simbólica, a transformando em matriz numérica
- F1 = double(vpa(subs(F1, th1, t1s), 12)); % subs é executado primeiro, substituindo th1 por t1s. Depois vem o vpa que transforma o decimal do resultado de subs e o resume a 12 casas decimais e o double transforma em matriz numérica
  F2 = double(vpa(subs(F2, [L1 th1 th2], [l1s t1s t2s]), 12)); % substitui L1, th1 e th2 por seus respectivos valores; vpa reduz a 12 casas decimais; double transforma em matriz numérica
  F3 = double(vpa(subs(F3, [L2 L1 th1 th2 th3], [l2s l1s t1s t2s t3s]), 12)); % substitui L2, L1, th1, th2 e th3; vpa avalia com 12 dígitos; double converte para matriz numérica
  F4 = double(vpa(subs(F4, [L3 L2 L1 th1 th2 th3 th4], [l3s l2s l1s t1s t2s t3s t4s]), 12)); % substitui L3 até L1 e th1 até th4; vpa reduz a 12 casas; double gera matriz numérica
