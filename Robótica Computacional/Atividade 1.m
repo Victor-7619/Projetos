@@ -5,6 +5,8 @@ close all % fecha todas as figuras gráficas abertas
 ## Pacote simbólico % biblioteca com variáveis
 pkg load symbolic % carregar as funções do pacote
 
+% --------- Simbólico base ---------
+
 syms th dx dy dz L1 l2 L3 L4 L5 L6 L7 real % declarar variáveis simbólicas
 syms th1 th2 th3 th4 th5 th6 th7 real %declarar variáveis simbólicas
 
@@ -28,6 +30,8 @@ Rx = [ one   zero     zero     zero; % Eixo X1,onde o X1 vai ser rotacionado e c
        zero     zero     one  zero]; % Linha para montar matriz generalizada
        
  F0=sym(eye(4)); % criação de matriz identidade 4x4 e conversão para símbolos matemáticos
+ 
+ % --------- Cadeia de frames (100% simbólica) ---------
  
  Tr_0_1 = subs(T, [dx dy dz], [zero zero zero]); % inicializar o sistema homogêneo
  TH_0_1 = Tr_0_1 * subs(Rz, th, th1); % comando de movimentação sendo o antigo * o novo para movimentação
@@ -69,8 +73,40 @@ Rx = [ one   zero     zero     zero; % Eixo X1,onde o X1 vai ser rotacionado e c
  F8 = F7 * Tr_7_8; % Frame 8 será o Frame 7 multiplicado pelo Tr_7_8
 
  % em resumo, do frame 7 para o frame 8, o robô irá transladar l7 unidades no eixo Z, sem rotacionar
+ 
+ % --------- Parâmetros numéricos ---------
+ 
+ % comprimentos (strings -> simbólico)
+ l1s = sym('0.18'); l2s = sym('0.169'); l3s = sym('0.159'); % declaração de valores para l1 a l3
+ l4s = sym('0.14825'); l5s = sym('0.12825'); l6s = sym('0.12585'); % declaração de valores para l4 a l6
+ l7s = sym('0.04585');% declaração de valores para l7
+ 
+ % ângulos em rad (simbólicos)
+ t1s = deg2rad_sym(0); t2s = deg2rad_sym(0); t3s = deg2rad_sym(0); % conversão de graus para radianos
+ t4s = deg2rad_sym(0); t5s = deg2rad_sym(0); t6s = deg2rad_sym(0); % conversão de graus para radianos
+ t7s = deg2rad_sym(45); % conversão de graus para radianos
+ 
+ % --------- Substituições -> vpa -> double ---------
+ F0 = eye(4); % criação de matriz identidade 4x4 (ponto de origem frame 0)
+ F1 = double(vpa(subs(F1, th1, t1s), 12)); % subs é executado primeiro, substituindo th1 por t1s. Depois vem o vpa que transforma o decimal do resultado de subs e o resume a 12 casas decimais e o double substitui todos os th1 por t1s na matriz simbólica, a transformando em matriz numérica
+ F1 = double(vpa(subs(F1, th1, t1s), 12)); % subs é executado primeiro, substituindo th1 por t1s. Depois vem o vpa que transforma o decimal do resultado de subs e o resume a 12 casas decimais e o double transforma em matriz numérica
+ F2 = double(vpa(subs(F2, [L1 th1 th2], [l1s t1s t2s]), 12)); % substitui L1, th1 e th2 por seus respectivos valores; vpa reduz a 12 casas decimais; double transforma em matriz numérica
+ F3 = double(vpa(subs(F3, [L2 L1 th1 th2 th3], [l2s l1s t1s t2s t3s]), 12)); % substitui L2, L1, th1, th2 e th3; vpa avalia com 12 dígitos; double converte para matriz numérica
+ F4 = double(vpa(subs(F4, [L3 L2 L1 th1 th2 th3 th4], [l3s l2s l1s t1s t2s t3s t4s]), 12)); % substitui L3 até L1 e th1 até th4; vpa reduz a 12 casas; double gera matriz numérica
+ F5 = double(vpa(subs(F5, [L4 L3 L2 L1 th1 th2 th3 th4 th5], [l4s l3s l2s l1s t1s t2s t3s t4s t5s]), 12)); % substitui L4 até L1 e th1 até th5; vpa e double finalizam como antes
+ F6 = double(vpa(subs(F6, [L5 L4 L3 L2 L1 th1 th2 th3 th4 th5 th6], [l5s l4s l3s l2s l1s t1s t2s t3s t4s t5s t6s]), 12)); % substitui L5 até L1 e th1 até th6; vpa avalia com 12 casas decimais; double transforma em matriz numérica
+ F7 = double(vpa(subs(F7, [L6 L5 L4 L3 L2 L1 th1 th2 th3 th4 th5 th6 th7], [l6s l5s l4s l3s l2s l1s t1s t2s t3s t4s t5s t6s t7s]), 12)); % substitui L6 até L1 e th1 até th7; vpa calcula com 12 casas decimais; double converte para matriz numérica
+ F8 = double(vpa(subs(F8, [L7 L6 L5 L4 L3 L2 L1 th1 th2 th3 th4 th5 th6 th7], [l7s l6s l5s l4s l3s l2s l1s t1s t2s t3s t4s t5s t6s t7s]), 12)); % substitui L7 até L1 e th1 até th7; vpa avalia com 12 casas decimais; double transforma em matriz numérica
 
-       
+ % ==== Plot ====
+ figure(1); clf; % cria e limpa uma janela da figura no plano
+ axis equal; % garante que os três eixos tenham a mesma escala para evitar distorções
+ grid on; % ativa a grade do gráfico (linhas)
+ view(3); % permite a visualização 3D
+ xlabel('x'); ylabel('y'); zlabel('z'); nomeia os eixos
+ hold on; % permite adicionar vários gráficos sem apagar os anteriores
+ esc = 0.1; % define o fator de escala visual em 0.1
+ mark = 5; % define o tamanho dos pontos em 5
 
        
        
