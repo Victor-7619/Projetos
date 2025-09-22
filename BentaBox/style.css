@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Cabin", sans-serif;
+    background-color:#FFF3E8;
+}
+a {
+    text-decoration: none;
+    color: #333;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 2px solid #e0d5c9;
+}
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+.logo-link img {
+    height: 35px;
+    vertical-align: middle;
+}
+
+.nav-link-marmitas {
+    font-weight: bold;
+    font-size: 16px;
+}
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+.button1 {
+    font-weight: bold;
+    font-size: 16px;
+}
+.button2 {
+    font-weight: bold;
+    font-size: 16px;
+}
+.button3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background-color: #ff8c61;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+main {
+    padding: 20px 0;
+    text-align: center;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.marmita-destaque {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 900px;
+    border-radius: 5%;
+    margin: 60px auto;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 40px 5%;
+    
+    background-color: beige;
+    border: none;
+    padding: 40px 0;
+    color: #db8864;
+}
+.fonte_gramas {
+    font-size: 1rem;
+    font-weight: 400;
+}
+.menu-item {
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.menu-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 20px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.menu-item h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #D97346;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.menu-item .fonte_gramas {
+    font-size: 1rem;
+    font-weight: 400;
+}
