@@ -65,6 +65,63 @@ void crescenteLista(Lista *p)
         }
     }
 }
+/*Lista* mergeListas(Lista *L1,Lista *L2)
+{
+    No *aux = L1->inicio, *aux2 = L2->inicio;
+
+    while(aux)
+}*/
+Lista * Divide(Lista *p, int k)
+{
+    Lista* L;
+    L = criaLista();
+    No *aux = p->inicio;
+    int valor;
+
+    for(int i = 1; aux!= NULL && i<k; i++)
+    {
+        aux = aux->prox;
+    }
+    while(aux!=NULL)
+    {
+        aux = aux->prox;
+        if(apagaQualquerPosLista(p,k,&valor))
+        {
+            insereFimLista(L,valor);
+        }
+    }
+    return L;
+}
+void ImprimeSuspeito(Lista *p)
+{
+    No *aux = p->inicio;
+    int cont = 0;
+
+    while(aux != NULL)
+    {
+        if(aux->info == 1)
+        {
+            cont++;
+        }
+        aux = aux->prox;
+    }
+    if(cont==2)
+    {
+        printf("\nPessoa analisada é suspeita!");
+    }
+    else if(cont==3||cont==4)
+    {
+        printf("\nPessoa analisada consta como cumplice!");
+    }
+    else if(cont==5)
+    {
+        printf("\nPessoa analisada consta como Assassina!");
+    }
+    else
+    {
+       printf("\nPessoa é inocente.");
+    }
+}
 int main()
 {
     Lista *L,*L2,*L3;
@@ -74,20 +131,28 @@ int main()
     L3 = inicializaLista();
     L3 = criaLista();
 
-    insereInicioLista(L,3);
-    insereInicioLista(L,7);
-    insereInicioLista(L,9);
+    insereInicioLista(L,0);
+    insereInicioLista(L,0);
+    insereInicioLista(L,0);
+    insereInicioLista(L,0);
+    insereInicioLista(L,0);
 
     insereInicioLista(L3,4);
     insereInicioLista(L3,2);
     insereInicioLista(L3,6);
 
-    crescenteLista(L);
+    /*printf("inicio L1: %d", apagaInicioLista(L));
+    printf("\nfim l1: %d", apagaFimLista(L));
+    printf("\npos 2 L3: %d", apagaQualquerPosLista(L3,2));*/
+
+    /*crescenteLista(L);
     crescenteLista(L3);
+    L2 = Divide(L,7);*/
 
     imprimeLista(L);
-    imprimeLista(L2);
-    imprimeLista(L3);
+    /*imprimeLista(L2);
+    imprimeLista(L3);*/
+    ImprimeSuspeito(L);
 
     return 0;
 }

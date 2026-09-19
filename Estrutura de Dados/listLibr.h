@@ -50,6 +50,16 @@ Lista* liberaLista(Lista* L)
 
 // COMANDOS PARA INSERIR NA LISTA
 // Auxiliares
+int confereTam(No* antigo)
+{
+    int cont = 0;
+    while(antigo!=NULL)
+    {
+        cont++;
+        antigo = antigo->prox;
+    }
+    return cont;
+}
 No* auxInsere(No* antigo, int valor)
 {
     No *novo;
@@ -65,7 +75,7 @@ No* auxRemove(No* antigo)
         free(antigo);
         return NULL;
     }
-    No *novo=antigo->prox;
+    No *novo = antigo->prox;
     free(antigo);
     return novo;
 }
@@ -76,6 +86,7 @@ No* auxInserePos(No *antigo, int valor, int pos)
     novo = (No*)malloc(sizeof(No));
     novo->info=valor;
     novo->prox=NULL;
+
     for(int cont=1;aux2!=NULL&&cont<pos;cont++)
     {
         aux=aux2;
@@ -90,7 +101,7 @@ No* auxInserePos(No *antigo, int valor, int pos)
     novo->prox=aux2;
     return antigo;
 }
-No* auxApagaPos(No *antigo,int pos)
+No* auxApagaPos(No *antigo,int pos,int *valor)
 {
     No *aux=NULL,*aux2=antigo;
     int cont;
@@ -109,10 +120,12 @@ No* auxApagaPos(No *antigo,int pos)
     if(aux==NULL)
     {
         aux=aux2->prox;
+        *valor = aux2->info;
         free(aux2);
         return aux;
     }
     aux->prox=aux2->prox;
+    *valor = aux2->info;
     free(aux2);
     return antigo;
 }
@@ -143,52 +156,61 @@ void insereFimLista(Lista *velho, int valor)
         aux->prox = auxInsere(aux->prox,valor);
     }
 }
-void apagaInicioLista(Lista *velho)
+int apagaInicioLista(Lista *velho)
 {
-    if(vaziaLista(velho))
-    {
-        printf("Lista vazia!");
-    }
-    else
-    {
-        velho->inicio=auxRemove(velho->inicio);
-    }
-}
-void apagaFimLista(Lista *velho)
-{
-    No *aux = NULL,*aux2 = velho->inicio;
+    int valor = 0;
 
     if(vaziaLista(velho))
     {
         printf("Lista vazia!");
+        exit(0);
     }
     else
     {
-        while(aux2->prox!=NULL)
-        {
-            aux = aux2;
-            aux2 = aux2->prox;
-        }
-        if(aux == NULL)
-        {
-            velho->inicio = auxRemove(aux2);
-        }
-        else
-        {
-            aux->prox = auxRemove(aux2);
-        }
+        valor = velho->inicio->info;
+        velho->inicio = auxRemove(velho->inicio);
+        return valor;
     }
 }
-void apagaQualquerPosLista(Lista *velho,int pos)
+int apagaFimLista(Lista *velho)
 {
+    No *aux = NULL,*aux2 = velho->inicio;
+    int valor;
+
+    if(vaziaLista(velho))
+    {
+        printf("Lista vazia!");
+        exit(0);
+    }
+    while(aux2->prox!=NULL)
+    {
+        aux = aux2;
+        aux2 = aux2->prox;
+    }
+    if(aux == NULL)
+    {
+        valor = velho->inicio->info;
+        velho->inicio = auxRemove(aux2);
+        return valor;
+    }
+    valor = aux2->info;
+    aux->prox = auxRemove(aux2);
+    return valor;
+}
+int apagaQualquerPosLista(Lista *velho,int pos, int *valor)
+{
+    if(pos<1 || confereTam(velho->inicio)<pos)
+    {
+        printf("\nPosição inexistente!");
+        return 0;
+    }
     if(!vaziaLista(velho))
     {
-        velho->inicio=auxApagaPos(velho->inicio,pos);
+        velho->inicio=auxApagaPos(velho->inicio,pos,valor);
+        return 1;
     }
-    else
-    {
-        printf("lista Vazia!");
-    }
+    printf("lista Vazia!");
+    return 0;
 }
 void imprimeLista(Lista *L)
 {
